@@ -2,9 +2,13 @@ FROM python:3.9-slim
 
 WORKDIR /app
 
-COPY requirements-infer.txt .
-RUN pip install --no-cache-dir -r requirements-infer.txt
+COPY . /app
 
-COPY . .
+# 🔥 THIS IS THE FIX
+ENV PYTHONPATH="/app/src"
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+EXPOSE 8080
 
 CMD ["gunicorn", "-b", "0.0.0.0:8080", "app:app"]
